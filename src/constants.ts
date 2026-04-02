@@ -3,6 +3,7 @@ import { PlayerData } from "./types";
 export const PLAYER_DATA: PlayerData = {
   name: "Alexander 'Xenon' Rivers",
   handle: "XENON",
+  handlePrefix: "PRO PLAYER",
   role: "Entry Fragger / IGL",
   team: "GOLDEN PHOENIX",
   teamLogo: "https://picsum.photos/seed/phoenix/200/200",

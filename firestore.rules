@@ -24,22 +24,9 @@ service cloud.firestore {
     }
 
     function isValidPlayerConfig(data) {
-      return data.keys().hasAll(['imageUrl', 'imageScale', 'textOffset', 'leftLogoUrl', 'leftLogoScale', 'rightLogoUrl', 'rightLogoScale']) &&
-             data.imageUrl is string &&
+      return data.imageUrl is string &&
              data.imageScale is number &&
-             data.imageScale >= 0.1 &&
-             data.imageScale <= 5.0 &&
-             data.textOffset is number &&
-             data.textOffset >= -500 &&
-             data.textOffset <= 500 &&
-             data.leftLogoUrl is string &&
-             data.leftLogoScale is number &&
-             data.leftLogoScale >= 0.1 &&
-             data.leftLogoScale <= 3.0 &&
-             data.rightLogoUrl is string &&
-             data.rightLogoScale is number &&
-             data.rightLogoScale >= 0.1 &&
-             data.rightLogoScale <= 3.0;
+             data.handle is string;
     }
 
     match /config/player {

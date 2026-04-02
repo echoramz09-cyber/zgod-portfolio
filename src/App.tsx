@@ -27,22 +27,23 @@ const IconMap: Record<string, any> = {
 };
 
 export default function App() {
-  const [playerImage, setPlayerImage] = useState(PLAYER_DATA.image);
-  const [playerScale, setPlayerScale] = useState(PLAYER_DATA.imageScale);
-  const [textOffset, setTextOffset] = useState(PLAYER_DATA.textOffset);
-  const [leftLogo, setLeftLogo] = useState({ url: PLAYER_DATA.leftLogoUrl, scale: PLAYER_DATA.leftLogoScale });
-  const [rightLogo, setRightLogo] = useState({ url: PLAYER_DATA.rightLogoUrl, scale: PLAYER_DATA.rightLogoScale });
+  const [playerData, setPlayerData] = useState<any>(PLAYER_DATA);
 
   useEffect(() => {
     // Real-time listener for player config
     const unsub = onSnapshot(doc(db, "config", "player"), (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        setPlayerImage(data.imageUrl || "");
-        setPlayerScale(data.imageScale || 1);
-        setTextOffset(data.textOffset ?? -80);
-        setLeftLogo({ url: data.leftLogoUrl || "", scale: data.leftLogoScale || 1 });
-        setRightLogo({ url: data.rightLogoUrl || "", scale: data.rightLogoScale || 1 });
+        setPlayerData({
+          ...PLAYER_DATA,
+          ...data,
+          socials: [
+            { platform: "Twitter", url: data.twitterUrl || PLAYER_DATA.socials[0].url, icon: "Twitter" },
+            { platform: "Instagram", url: data.instagramUrl || PLAYER_DATA.socials[1].url, icon: "Instagram" },
+            { platform: "Twitch", url: data.twitchUrl || PLAYER_DATA.socials[2].url, icon: "Twitch" },
+            { platform: "YouTube", url: data.youtubeUrl || PLAYER_DATA.socials[3].url, icon: "Youtube" },
+          ]
+        });
       }
     });
     return () => unsub();
@@ -53,22 +54,22 @@ export default function App() {
       {/* Top Logos */}
       <div className="fixed top-0 inset-x-0 z-50 flex justify-between items-start p-4 md:p-6 pointer-events-none overflow-hidden">
         <div className="transition-all duration-300 max-w-[40%]">
-          {leftLogo.url && (
+          {playerData.leftLogoUrl && (
             <img 
-              src={leftLogo.url} 
+              src={playerData.leftLogoUrl} 
               alt="Left Logo" 
-              style={{ transform: `scale(${leftLogo.scale})`, transformOrigin: 'top left' }}
+              style={{ transform: `scale(${playerData.leftLogoScale})`, transformOrigin: 'top left' }}
               className="h-10 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
           )}
         </div>
         <div className="transition-all duration-300 max-w-[40%]">
-          {rightLogo.url && (
+          {playerData.rightLogoUrl && (
             <img 
-              src={rightLogo.url} 
+              src={playerData.rightLogoUrl} 
               alt="Right Logo" 
-              style={{ transform: `scale(${rightLogo.scale})`, transformOrigin: 'top right' }}
+              style={{ transform: `scale(${playerData.rightLogoScale})`, transformOrigin: 'top right' }}
               className="h-10 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
@@ -94,11 +95,16 @@ export default function App() {
       </div>
 
       <AdminPanel onUpdate={(data) => {
-        setPlayerImage(data.imageUrl);
-        setPlayerScale(data.scale);
-        setTextOffset(data.offset);
-        setLeftLogo({ url: data.leftLogoUrl, scale: data.leftLogoScale });
-        setRightLogo({ url: data.rightLogoUrl, scale: data.rightLogoScale });
+        setPlayerData({
+          ...PLAYER_DATA,
+          ...data,
+          socials: [
+            { platform: "Twitter", url: data.twitterUrl || PLAYER_DATA.socials[0].url, icon: "Twitter" },
+            { platform: "Instagram", url: data.instagramUrl || PLAYER_DATA.socials[1].url, icon: "Instagram" },
+            { platform: "Twitch", url: data.twitchUrl || PLAYER_DATA.socials[2].url, icon: "Twitch" },
+            { platform: "YouTube", url: data.youtubeUrl || PLAYER_DATA.socials[3].url, icon: "Youtube" },
+          ]
+        });
       }} />
 
       {/* Hero Section - Dynamic Layout based on Scale */}
@@ -106,12 +112,12 @@ export default function App() {
         {/* Vertical Player Image Container */}
         <div 
           className="relative w-full max-w-4xl flex items-center justify-center transition-all duration-500 ease-out"
-          style={{ height: `${45 * playerScale}vh` }}
+          style={{ height: `${45 * (playerData.imageScale || 1)}vh` }}
         >
           <AnimatePresence mode="wait">
-            {playerImage ? (
+            {playerData.imageUrl ? (
               <motion.div
-                key={playerImage}
+                key={playerData.imageUrl}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
@@ -119,9 +125,9 @@ export default function App() {
                 className="relative h-full w-full flex justify-center"
               >
                 <img 
-                  src={playerImage} 
-                  alt={PLAYER_DATA.name}
-                  style={{ transform: `scale(${playerScale})`, transformOrigin: 'top center' }}
+                  src={playerData.imageUrl} 
+                  alt={playerData.name}
+                  style={{ transform: `scale(${playerData.imageScale || 1})`, transformOrigin: 'top center' }}
                   className="h-full w-auto object-contain object-top mask-image-b drop-shadow-[0_0_50px_rgba(251,191,36,0.3)] transition-transform duration-300"
                   referrerPolicy="no-referrer"
                 />
@@ -139,7 +145,7 @@ export default function App() {
         {/* Details Section - Overlapping the bottom of the image dynamically */}
         <div 
           className="relative z-20 w-full max-w-7xl mx-auto px-6 transition-all duration-300"
-          style={{ marginTop: `${textOffset}px` }}
+          style={{ marginTop: `${playerData.textOffset ?? -80}px` }}
         >
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -147,18 +153,23 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col items-center text-center"
           >
-            <h1 className="text-3xl md:text-5xl font-black uppercase leading-[0.8] mb-4 tracking-tighter gold-text-gradient drop-shadow-[0_0_80px_rgba(0,0,0,0.8)]">
-              {PLAYER_DATA.handle}
-            </h1>
+            <div className="mb-2 flex flex-col items-center">
+              <span className="text-gold-500 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] mb-1 opacity-80 self-start ml-2">
+                {playerData.handlePrefix}
+              </span>
+              <h1 className="text-5xl md:text-8xl font-black uppercase leading-[0.8] tracking-tighter gold-text-gradient drop-shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+                {playerData.handle}
+              </h1>
+            </div>
 
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 mb-12">
-              <div className="flex items-center gap-3 text-2xl font-bold text-white/90 uppercase tracking-tight">
-                <Gamepad2 className="text-gold-500" size={28} />
-                {PLAYER_DATA.role}
+              <div className="flex items-center gap-3 text-xl md:text-2xl font-bold text-white/90 uppercase tracking-tight">
+                <Gamepad2 className="text-gold-500" size={24} />
+                {playerData.role}
               </div>
               <div className="hidden md:block w-px h-8 bg-white/20" />
-              <div className="flex items-center gap-3 text-2xl font-bold text-white/90 uppercase tracking-tight">
-                <Trophy className="text-gold-500" size={28} />
+              <div className="flex items-center gap-3 text-xl md:text-2xl font-bold text-white/90 uppercase tracking-tight">
+                <Trophy className="text-gold-500" size={24} />
                 World Champion
               </div>
             </div>
@@ -168,7 +179,7 @@ export default function App() {
                 Socials
               </span>
               <div className="flex items-center gap-3">
-                {PLAYER_DATA.socials.map((social) => {
+                {playerData.socials.map((social: any) => {
                   const Icon = IconMap[social.icon];
                   return (
                     <a 
@@ -176,9 +187,9 @@ export default function App() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center text-white/60 hover:text-gold-400 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all bg-white/5 backdrop-blur-sm"
+                      className="w-12 h-12 md:w-14 md:h-14 rounded-2xl border border-white/10 flex items-center justify-center text-white/60 hover:text-gold-400 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all bg-white/5 backdrop-blur-sm"
                     >
-                      <Icon size={24} />
+                      <Icon size={20} />
                     </a>
                   );
                 })}
@@ -191,8 +202,12 @@ export default function App() {
       {/* Stats Section - Made Transparent */}
       <section id="stats" className="relative z-10 py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl font-black uppercase mb-12 flex items-center gap-4">
+            <span className="w-12 h-1 bg-gold-500" />
+            Stats
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {PLAYER_DATA.stats.map((stat, index) => (
+            {playerData.stats.map((stat: any, index: number) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -225,14 +240,14 @@ export default function App() {
               <div className="p-10 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col md:flex-row items-center gap-10">
                 <div className="w-40 h-40 rounded-2xl overflow-hidden gold-border p-2 bg-black">
                   <img 
-                    src={PLAYER_DATA.teamLogo} 
-                    alt={PLAYER_DATA.team} 
+                    src={playerData.teamLogo} 
+                    alt={playerData.team} 
                     className="w-full h-full object-contain"
                     referrerPolicy="no-referrer"
                   />
                 </div>
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="text-3xl font-black text-white mb-2 uppercase">{PLAYER_DATA.team}</h3>
+                  <h3 className="text-3xl font-black text-white mb-2 uppercase">{playerData.team}</h3>
                   <p className="text-gold-400 font-bold uppercase tracking-widest mb-6">Tier 1 Organization</p>
                   <div className="flex flex-wrap justify-center md:justify-start gap-3">
                     <span className="px-4 py-2 bg-white/5 rounded-lg text-xs font-bold uppercase tracking-wider text-white/60">Active Roster</span>
@@ -249,7 +264,7 @@ export default function App() {
                 Hall of Fame
               </h2>
               <div className="space-y-4">
-                {PLAYER_DATA.achievements.map((achievement, index) => (
+                {playerData.achievements.map((achievement: string, index: number) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, x: 20 }}
@@ -281,7 +296,7 @@ export default function App() {
               </p>
             </div>
             <a 
-              href={`https://youtube.com/channel/${PLAYER_DATA.youtubeChannelId}`}
+              href={`https://youtube.com/channel/${playerData.youtubeChannelId}`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-gold-500 font-black uppercase tracking-widest hover:text-gold-400 transition-colors group"

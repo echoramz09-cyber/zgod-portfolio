@@ -7,6 +7,7 @@ export interface SocialLink {
 export interface PlayerData {
   name: string;
   handle: string;
+  handlePrefix: string;
   role: string;
   team: string;
   teamLogo: string;
