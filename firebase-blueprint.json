@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "playerConfig": {
+      "title": "Player Configuration",
+      "description": "Configuration for the player's profile, including image and scale.",
+      "type": "object",
+      "properties": {
+        "imageUrl": {
+          "type": "string",
+          "description": "The URL of the player's vertical image."
+        },
+        "imageScale": {
+          "type": "number",
+          "description": "The scale of the player's image (e.g., 1.0 for 100%)."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The last time the configuration was updated."
+        }
+      },
+      "required": ["imageUrl", "imageScale"]
+    }
+  },
+  "firestore": {
+    "/config/player": {
+      "schema": "playerConfig",
+      "description": "The single document containing player profile configuration."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: config
+    // Document ID: player
+    // Fields:
+    //   - imageUrl: string (required) - The URL of the player's image.
+    //   - imageScale: number (required) - The scale of the image (0.1 to 2.0).
+    //   - updatedAt: timestamp (optional) - Last update time.
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated();
+    }
+
+    function isValidPlayerConfig(data) {
+      return data.keys().hasAll(['imageUrl', 'imageScale']) &&
+             data.imageUrl is string &&
+             data.imageScale is number &&
+             data.imageScale >= 0.1 &&
+             data.imageScale <= 5.0;
+    }
+
+    match /config/player {
+      // Anyone can read the config
+      allow read: if true;
+      
+      // Allow the admin (authenticated via our panel) to write
+      allow write: if isAdmin() && isValidPlayerConfig(request.resource.data);
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
