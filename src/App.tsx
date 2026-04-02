@@ -75,7 +75,7 @@ export default function App() {
         {/* Vertical Player Image Container */}
         <div 
           className="relative w-full max-w-4xl flex items-center justify-center transition-all duration-500 ease-out"
-          style={{ height: `${65 * playerScale}vh` }}
+          style={{ height: `${45 * playerScale}vh` }}
         >
           <AnimatePresence mode="wait">
             {playerImage ? (
@@ -118,7 +118,7 @@ export default function App() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col items-center text-center"
           >
-            <h1 className="text-7xl md:text-[10rem] font-black uppercase leading-[0.8] mb-8 tracking-tighter gold-text-gradient drop-shadow-[0_0_80px_rgba(0,0,0,0.8)]">
+            <h1 className="text-3xl md:text-5xl font-black uppercase leading-[0.8] mb-4 tracking-tighter gold-text-gradient drop-shadow-[0_0_80px_rgba(0,0,0,0.8)]">
               {PLAYER_DATA.handle}
             </h1>
 
