@@ -45,6 +45,15 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
   const ADMIN_PASS = 'rehanabegum123';
 
   useEffect(() => {
+    // Listen for auth state changes to persist login
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+
     const fetchConfig = async () => {
       try {
         const docRef = doc(db, 'config', 'player');
