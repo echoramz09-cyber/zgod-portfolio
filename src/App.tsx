@@ -29,6 +29,7 @@ const IconMap: Record<string, any> = {
 export default function App() {
   const [playerImage, setPlayerImage] = useState(PLAYER_DATA.image);
   const [playerScale, setPlayerScale] = useState(PLAYER_DATA.imageScale);
+  const [textOffset, setTextOffset] = useState(PLAYER_DATA.textOffset);
 
   useEffect(() => {
     // Real-time listener for player config
@@ -37,6 +38,7 @@ export default function App() {
         const data = doc.data();
         setPlayerImage(data.imageUrl || "");
         setPlayerScale(data.imageScale || 1);
+        setTextOffset(data.textOffset ?? -80);
       }
     });
     return () => unsub();
@@ -62,9 +64,10 @@ export default function App() {
         <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-repeat z-30" />
       </div>
 
-      <AdminPanel onUpdate={(img, scl) => {
+      <AdminPanel onUpdate={(img, scl, off) => {
         setPlayerImage(img);
         setPlayerScale(scl);
+        setTextOffset(off);
       }} />
 
       {/* Hero Section - Dynamic Layout based on Scale */}
@@ -104,8 +107,11 @@ export default function App() {
           </AnimatePresence>
         </div>
 
-        {/* Details Section - Overlapping the bottom of the image */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-6 -mt-20 md:-mt-32">
+        {/* Details Section - Overlapping the bottom of the image dynamically */}
+        <div 
+          className="relative z-20 w-full max-w-7xl mx-auto px-6 transition-all duration-300"
+          style={{ marginTop: `${textOffset}px` }}
+        >
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}

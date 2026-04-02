@@ -24,11 +24,14 @@ service cloud.firestore {
     }
 
     function isValidPlayerConfig(data) {
-      return data.keys().hasAll(['imageUrl', 'imageScale']) &&
+      return data.keys().hasAll(['imageUrl', 'imageScale', 'textOffset']) &&
              data.imageUrl is string &&
              data.imageScale is number &&
              data.imageScale >= 0.1 &&
-             data.imageScale <= 5.0;
+             data.imageScale <= 5.0 &&
+             data.textOffset is number &&
+             data.textOffset >= -500 &&
+             data.textOffset <= 500;
     }
 
     match /config/player {

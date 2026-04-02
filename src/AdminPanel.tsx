@@ -15,7 +15,7 @@ enum OperationType {
 }
 
 interface AdminPanelProps {
-  onUpdate: (imageUrl: string, scale: number) => void;
+  onUpdate: (imageUrl: string, scale: number, offset: number) => void;
 }
 
 export default function AdminPanel({ onUpdate }: AdminPanelProps) {
@@ -25,6 +25,7 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
   const [password, setPassword] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [scale, setScale] = useState(1);
+  const [offset, setOffset] = useState(-80);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -40,7 +41,8 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
           const data = docSnap.data();
           setImageUrl(data.imageUrl || '');
           setScale(data.imageScale || 1);
-          onUpdate(data.imageUrl || '', data.imageScale || 1);
+          setOffset(data.textOffset ?? -80);
+          onUpdate(data.imageUrl || '', data.imageScale || 1, data.textOffset ?? -80);
         }
       } catch (err) {
         console.error("Error fetching config:", err);
@@ -91,9 +93,10 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
       await setDoc(doc(db, 'config', 'player'), {
         imageUrl,
         imageScale: parseFloat(scale.toString()),
+        textOffset: parseFloat(offset.toString()),
         updatedAt: serverTimestamp()
       });
-      onUpdate(imageUrl, scale);
+      onUpdate(imageUrl, scale, offset);
       setIsOpen(false);
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, path);
@@ -202,6 +205,26 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
                         <span>Small</span>
                         <span>Normal</span>
                         <span>Large</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-bold text-gold-500 uppercase tracking-widest flex items-center gap-2">
+                        <Maximize size={14} className="rotate-90" /> Text Overlap ({offset}px)
+                      </label>
+                      <input 
+                        type="range" 
+                        min="-300" 
+                        max="100" 
+                        step="5"
+                        value={offset}
+                        onChange={(e) => setOffset(parseFloat(e.target.value))}
+                        className="w-full accent-gold-500"
+                      />
+                      <div className="flex justify-between text-[10px] text-white/40 font-bold uppercase tracking-widest">
+                        <span>High Overlap</span>
+                        <span>No Overlap</span>
+                        <span>Below Image</span>
                       </div>
                     </div>
                   </div>

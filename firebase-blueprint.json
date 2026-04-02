@@ -13,6 +13,10 @@
           "type": "number",
           "description": "The scale of the player's image (e.g., 1.0 for 100%)."
         },
+        "textOffset": {
+          "type": "number",
+          "description": "The vertical offset of the text relative to the image (negative for overlap)."
+        },
         "updatedAt": {
           "type": "string",
           "format": "date-time",
