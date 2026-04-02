@@ -15,7 +15,15 @@ enum OperationType {
 }
 
 interface AdminPanelProps {
-  onUpdate: (imageUrl: string, scale: number, offset: number) => void;
+  onUpdate: (data: {
+    imageUrl: string;
+    scale: number;
+    offset: number;
+    leftLogoUrl: string;
+    leftLogoScale: number;
+    rightLogoUrl: string;
+    rightLogoScale: number;
+  }) => void;
 }
 
 export default function AdminPanel({ onUpdate }: AdminPanelProps) {
@@ -26,6 +34,10 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
   const [imageUrl, setImageUrl] = useState('');
   const [scale, setScale] = useState(1);
   const [offset, setOffset] = useState(-80);
+  const [leftLogoUrl, setLeftLogoUrl] = useState('');
+  const [leftLogoScale, setLeftLogoScale] = useState(1);
+  const [rightLogoUrl, setRightLogoUrl] = useState('');
+  const [rightLogoScale, setRightLogoScale] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -42,7 +54,19 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
           setImageUrl(data.imageUrl || '');
           setScale(data.imageScale || 1);
           setOffset(data.textOffset ?? -80);
-          onUpdate(data.imageUrl || '', data.imageScale || 1, data.textOffset ?? -80);
+          setLeftLogoUrl(data.leftLogoUrl || '');
+          setLeftLogoScale(data.leftLogoScale || 1);
+          setRightLogoUrl(data.rightLogoUrl || '');
+          setRightLogoScale(data.rightLogoScale || 1);
+          onUpdate({
+            imageUrl: data.imageUrl || '',
+            scale: data.imageScale || 1,
+            offset: data.textOffset ?? -80,
+            leftLogoUrl: data.leftLogoUrl || '',
+            leftLogoScale: data.leftLogoScale || 1,
+            rightLogoUrl: data.rightLogoUrl || '',
+            rightLogoScale: data.rightLogoScale || 1,
+          });
         }
       } catch (err) {
         console.error("Error fetching config:", err);
@@ -94,9 +118,21 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
         imageUrl,
         imageScale: parseFloat(scale.toString()),
         textOffset: parseFloat(offset.toString()),
+        leftLogoUrl,
+        leftLogoScale: parseFloat(leftLogoScale.toString()),
+        rightLogoUrl,
+        rightLogoScale: parseFloat(rightLogoScale.toString()),
         updatedAt: serverTimestamp()
       });
-      onUpdate(imageUrl, scale, offset);
+      onUpdate({
+        imageUrl,
+        scale,
+        offset,
+        leftLogoUrl,
+        leftLogoScale,
+        rightLogoUrl,
+        rightLogoScale
+      });
       setIsOpen(false);
     } catch (err) {
       handleFirestoreError(err, OperationType.WRITE, path);
@@ -225,6 +261,54 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
                         <span>High Overlap</span>
                         <span>No Overlap</span>
                         <span>Below Image</span>
+                      </div>
+                    </div>
+
+                    <div className="border-t border-white/5 pt-6 space-y-6">
+                      <h3 className="text-sm font-black uppercase text-white tracking-widest">Top Logos</h3>
+                      
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-gold-500 uppercase tracking-widest">Left Logo URL</label>
+                          <input 
+                            type="text" 
+                            placeholder="https://..."
+                            value={leftLogoUrl}
+                            onChange={(e) => setLeftLogoUrl(e.target.value)}
+                            className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-white text-sm outline-none focus:border-gold-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-gold-500 uppercase tracking-widest">Left Logo Scale ({leftLogoScale})</label>
+                          <input 
+                            type="range" min="0.1" max="3" step="0.1"
+                            value={leftLogoScale}
+                            onChange={(e) => setLeftLogoScale(parseFloat(e.target.value))}
+                            className="w-full accent-gold-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-gold-500 uppercase tracking-widest">Right Logo URL</label>
+                          <input 
+                            type="text" 
+                            placeholder="https://..."
+                            value={rightLogoUrl}
+                            onChange={(e) => setRightLogoUrl(e.target.value)}
+                            className="w-full bg-black border border-white/10 rounded-xl px-4 py-2 text-white text-sm outline-none focus:border-gold-500"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-bold text-gold-500 uppercase tracking-widest">Right Logo Scale ({rightLogoScale})</label>
+                          <input 
+                            type="range" min="0.1" max="3" step="0.1"
+                            value={rightLogoScale}
+                            onChange={(e) => setRightLogoScale(parseFloat(e.target.value))}
+                            className="w-full accent-gold-500"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

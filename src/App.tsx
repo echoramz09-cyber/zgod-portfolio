@@ -30,6 +30,8 @@ export default function App() {
   const [playerImage, setPlayerImage] = useState(PLAYER_DATA.image);
   const [playerScale, setPlayerScale] = useState(PLAYER_DATA.imageScale);
   const [textOffset, setTextOffset] = useState(PLAYER_DATA.textOffset);
+  const [leftLogo, setLeftLogo] = useState({ url: PLAYER_DATA.leftLogoUrl, scale: PLAYER_DATA.leftLogoScale });
+  const [rightLogo, setRightLogo] = useState({ url: PLAYER_DATA.rightLogoUrl, scale: PLAYER_DATA.rightLogoScale });
 
   useEffect(() => {
     // Real-time listener for player config
@@ -39,6 +41,8 @@ export default function App() {
         setPlayerImage(data.imageUrl || "");
         setPlayerScale(data.imageScale || 1);
         setTextOffset(data.textOffset ?? -80);
+        setLeftLogo({ url: data.leftLogoUrl || "", scale: data.leftLogoScale || 1 });
+        setRightLogo({ url: data.rightLogoUrl || "", scale: data.rightLogoScale || 1 });
       }
     });
     return () => unsub();
@@ -46,6 +50,31 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black selection:bg-gold-500 selection:text-black relative">
+      {/* Top Logos */}
+      <div className="fixed top-0 inset-x-0 z-50 flex justify-between items-start p-6 pointer-events-none">
+        <div className="transition-all duration-300">
+          {leftLogo.url && (
+            <img 
+              src={leftLogo.url} 
+              alt="Left Logo" 
+              style={{ transform: `scale(${leftLogo.scale})`, transformOrigin: 'top left' }}
+              className="h-12 md:h-16 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
+          )}
+        </div>
+        <div className="transition-all duration-300">
+          {rightLogo.url && (
+            <img 
+              src={rightLogo.url} 
+              alt="Right Logo" 
+              style={{ transform: `scale(${rightLogo.scale})`, transformOrigin: 'top right' }}
+              className="h-12 md:h-16 w-auto object-contain"
+              referrerPolicy="no-referrer"
+            />
+          )}
+        </div>
+      </div>
       {/* Background Elements - Enhanced Visibility */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute inset-0 bg-black/70 z-10" /> {/* Dark Overlay */}
@@ -64,10 +93,12 @@ export default function App() {
         <div className="absolute inset-0 opacity-[0.05] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] bg-repeat z-30" />
       </div>
 
-      <AdminPanel onUpdate={(img, scl, off) => {
-        setPlayerImage(img);
-        setPlayerScale(scl);
-        setTextOffset(off);
+      <AdminPanel onUpdate={(data) => {
+        setPlayerImage(data.imageUrl);
+        setPlayerScale(data.scale);
+        setTextOffset(data.offset);
+        setLeftLogo({ url: data.leftLogoUrl, scale: data.leftLogoScale });
+        setRightLogo({ url: data.rightLogoUrl, scale: data.rightLogoScale });
       }} />
 
       {/* Hero Section - Dynamic Layout based on Scale */}
@@ -132,10 +163,10 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6">
-              <button className="gold-gradient px-12 py-6 rounded-2xl text-black font-black uppercase tracking-widest flex items-center gap-4 hover:shadow-[0_0_60px_rgba(245,158,11,0.7)] transition-all group text-lg">
-                Watch Live <Play size={24} className="fill-black group-hover:scale-110 transition-transform" />
-              </button>
+            <div className="flex flex-wrap justify-center gap-8 items-center">
+              <span className="text-gold-500 text-xs font-black uppercase tracking-[0.3em] opacity-60">
+                Socials
+              </span>
               <div className="flex items-center gap-3">
                 {PLAYER_DATA.socials.map((social) => {
                   const Icon = IconMap[social.icon];
@@ -145,9 +176,9 @@ export default function App() {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-16 h-16 rounded-2xl border border-white/10 flex items-center justify-center text-white/60 hover:text-gold-400 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all bg-white/5 backdrop-blur-sm"
+                      className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center text-white/60 hover:text-gold-400 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all bg-white/5 backdrop-blur-sm"
                     >
-                      <Icon size={28} />
+                      <Icon size={24} />
                     </a>
                   );
                 })}

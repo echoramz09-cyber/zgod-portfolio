@@ -13,6 +13,10 @@ export interface PlayerData {
   image: string;
   imageScale: number;
   textOffset: number;
+  leftLogoUrl: string;
+  leftLogoScale: number;
+  rightLogoUrl: string;
+  rightLogoScale: number;
   bio: string;
   socials: SocialLink[];
   youtubeChannelId: string;

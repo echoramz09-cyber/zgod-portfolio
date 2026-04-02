@@ -17,13 +17,29 @@
           "type": "number",
           "description": "The vertical offset of the text relative to the image (negative for overlap)."
         },
+        "leftLogoUrl": {
+          "type": "string",
+          "description": "URL for the logo on the top left."
+        },
+        "leftLogoScale": {
+          "type": "number",
+          "description": "Scale for the left logo."
+        },
+        "rightLogoUrl": {
+          "type": "string",
+          "description": "URL for the logo on the top right."
+        },
+        "rightLogoScale": {
+          "type": "number",
+          "description": "Scale for the right logo."
+        },
         "updatedAt": {
           "type": "string",
           "format": "date-time",
           "description": "The last time the configuration was updated."
         }
       },
-      "required": ["imageUrl", "imageScale"]
+      "required": ["imageUrl", "imageScale", "leftLogoUrl", "leftLogoScale", "rightLogoUrl", "rightLogoScale"]
     }
   },
   "firestore": {

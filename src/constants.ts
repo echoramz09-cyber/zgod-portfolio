@@ -9,6 +9,10 @@ export const PLAYER_DATA: PlayerData = {
   image: "",
   imageScale: 1,
   textOffset: -80,
+  leftLogoUrl: "",
+  leftLogoScale: 1,
+  rightLogoUrl: "",
+  rightLogoScale: 1,
   bio: "Professional FPS player with over 5 years of competitive experience. Known for aggressive entry fragging and strategic mid-round calling. Multiple-time major finalist and MVP.",
   socials: [
     { platform: "Twitter", url: "https://twitter.com", icon: "Twitter" },
