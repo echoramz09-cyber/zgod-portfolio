@@ -49,27 +49,27 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black selection:bg-gold-500 selection:text-black relative">
+    <div className="min-h-screen bg-black selection:bg-gold-500 selection:text-black relative overflow-x-hidden">
       {/* Top Logos */}
-      <div className="fixed top-0 inset-x-0 z-50 flex justify-between items-start p-6 pointer-events-none">
-        <div className="transition-all duration-300">
+      <div className="fixed top-0 inset-x-0 z-50 flex justify-between items-start p-4 md:p-6 pointer-events-none overflow-hidden">
+        <div className="transition-all duration-300 max-w-[40%]">
           {leftLogo.url && (
             <img 
               src={leftLogo.url} 
               alt="Left Logo" 
               style={{ transform: `scale(${leftLogo.scale})`, transformOrigin: 'top left' }}
-              className="h-12 md:h-16 w-auto object-contain"
+              className="h-10 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
           )}
         </div>
-        <div className="transition-all duration-300">
+        <div className="transition-all duration-300 max-w-[40%]">
           {rightLogo.url && (
             <img 
               src={rightLogo.url} 
               alt="Right Logo" 
               style={{ transform: `scale(${rightLogo.scale})`, transformOrigin: 'top right' }}
-              className="h-12 md:h-16 w-auto object-contain"
+              className="h-10 md:h-16 w-auto object-contain"
               referrerPolicy="no-referrer"
             />
           )}
