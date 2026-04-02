@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Settings, X, Save, LogIn, Image as ImageIcon, Maximize, AlertCircle } from 'lucide-react';
+import { Settings, X, Save, LogIn, Image as ImageIcon, Maximize, AlertCircle, Zap } from 'lucide-react';
 import { db, auth } from './firebase';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';

@@ -94,8 +94,6 @@ export default function App() {
                   className="h-full w-auto object-contain object-top mask-image-b drop-shadow-[0_0_50px_rgba(251,191,36,0.3)] transition-transform duration-300"
                   referrerPolicy="no-referrer"
                 />
-                {/* Bottom Fade for Text Readability */}
-                <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black via-black/80 to-transparent z-10" />
               </motion.div>
             ) : (
               <div className="w-full h-full max-w-4xl border-x border-dashed border-white/5 flex items-center justify-center">
