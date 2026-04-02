@@ -21,7 +21,6 @@ export const PLAYER_DATA: PlayerData = {
     { platform: "Twitch", url: "https://twitch.tv", icon: "Twitch" },
     { platform: "YouTube", url: "https://youtube.com", icon: "Youtube" },
   ],
-  youtubeChannelId: "UC_x5XG1OV2P6uYZ5gzmaUXA", // Placeholder
   achievements: [
     "1st Place - World Championship 2025",
     "MVP - Summer Masters 2024",
@@ -33,4 +32,8 @@ export const PLAYER_DATA: PlayerData = {
     { label: "Headshot %", value: "54%" },
     { label: "Matches", value: "1,240" },
   ],
+  teamSocialsHeading: "TEAM SOCIALS",
+  teamInstagramUrl: "https://instagram.com",
+  teamDiscordUrl: "https://discord.gg",
+  teamYoutubeUrl: "https://youtube.com",
 };

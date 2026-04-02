@@ -23,7 +23,10 @@
         "instagramUrl": { "type": "string" },
         "twitchUrl": { "type": "string" },
         "youtubeUrl": { "type": "string" },
-        "youtubeChannelId": { "type": "string" },
+        "teamSocialsHeading": { "type": "string" },
+        "teamInstagramUrl": { "type": "string" },
+        "teamDiscordUrl": { "type": "string" },
+        "teamYoutubeUrl": { "type": "string" },
         "achievements": { "type": "array", "items": { "type": "string" } },
         "stats": { 
           "type": "array", 

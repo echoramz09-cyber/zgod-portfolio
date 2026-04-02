@@ -20,10 +20,13 @@ export interface PlayerData {
   rightLogoScale: number;
   bio: string;
   socials: SocialLink[];
-  youtubeChannelId: string;
   achievements: string[];
   stats: {
     label: string;
     value: string;
   }[];
+  teamSocialsHeading: string;
+  teamInstagramUrl: string;
+  teamDiscordUrl: string;
+  teamYoutubeUrl: string;
 }

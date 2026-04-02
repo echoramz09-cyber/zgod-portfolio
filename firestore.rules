@@ -9,7 +9,8 @@ service cloud.firestore {
     // Document ID: player
     // Fields:
     //   - imageUrl: string (required) - The URL of the player's image.
-    //   - imageScale: number (required) - The scale of the image (0.1 to 2.0).
+    //   - imageScale: number (required) - The scale of the image (0.5 to 2.5).
+    //   - handle: string (required) - The player's handle.
     //   - updatedAt: timestamp (optional) - Last update time.
     //
     // ===============================================================

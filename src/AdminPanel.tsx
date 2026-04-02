@@ -46,7 +46,10 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
   const [instagramUrl, setInstagramUrl] = useState('');
   const [twitchUrl, setTwitchUrl] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [youtubeChannelId, setYoutubeChannelId] = useState('');
+  const [teamSocialsHeading, setTeamSocialsHeading] = useState('');
+  const [teamInstagramUrl, setTeamInstagramUrl] = useState('');
+  const [teamDiscordUrl, setTeamDiscordUrl] = useState('');
+  const [teamYoutubeUrl, setTeamYoutubeUrl] = useState('');
   const [achievements, setAchievements] = useState<string[]>([]);
   const [stats, setStats] = useState<{label: string, value: string}[]>([]);
 
@@ -86,7 +89,10 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
           setInstagramUrl(data.instagramUrl || PLAYER_DATA.socials[1].url);
           setTwitchUrl(data.twitchUrl || PLAYER_DATA.socials[2].url);
           setYoutubeUrl(data.youtubeUrl || PLAYER_DATA.socials[3].url);
-          setYoutubeChannelId(data.youtubeChannelId || PLAYER_DATA.youtubeChannelId);
+          setTeamSocialsHeading(data.teamSocialsHeading || PLAYER_DATA.teamSocialsHeading);
+          setTeamInstagramUrl(data.teamInstagramUrl || PLAYER_DATA.teamInstagramUrl);
+          setTeamDiscordUrl(data.teamDiscordUrl || PLAYER_DATA.teamDiscordUrl);
+          setTeamYoutubeUrl(data.teamYoutubeUrl || PLAYER_DATA.teamYoutubeUrl);
           setAchievements(data.achievements || PLAYER_DATA.achievements);
           setStats(data.stats || PLAYER_DATA.stats);
 
@@ -152,7 +158,10 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
         instagramUrl,
         twitchUrl,
         youtubeUrl,
-        youtubeChannelId,
+        teamSocialsHeading,
+        teamInstagramUrl,
+        teamDiscordUrl,
+        teamYoutubeUrl,
         achievements,
         stats,
         updatedAt: serverTimestamp()
@@ -328,6 +337,27 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
                             <input type="text" value={teamLogo} onChange={(e) => setTeamLogo(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
                           </div>
                         </div>
+                        
+                        <div className="space-y-6 pt-4 border-t border-white/5">
+                          <div className="space-y-3">
+                            <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">Team Socials Section Heading</label>
+                            <input type="text" value={teamSocialsHeading} onChange={(e) => setTeamSocialsHeading(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
+                          </div>
+                          <div className="grid md:grid-cols-3 gap-6">
+                            <div className="space-y-3">
+                              <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">Team Instagram</label>
+                              <input type="text" value={teamInstagramUrl} onChange={(e) => setTeamInstagramUrl(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
+                            </div>
+                            <div className="space-y-3">
+                              <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">Team Discord</label>
+                              <input type="text" value={teamDiscordUrl} onChange={(e) => setTeamDiscordUrl(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
+                            </div>
+                            <div className="space-y-3">
+                              <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">Team YouTube</label>
+                              <input type="text" value={teamYoutubeUrl} onChange={(e) => setTeamYoutubeUrl(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Socials Section */}
@@ -349,10 +379,6 @@ export default function AdminPanel({ onUpdate }: AdminPanelProps) {
                           <div className="space-y-3">
                             <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">YouTube URL</label>
                             <input type="text" value={youtubeUrl} onChange={(e) => setYoutubeUrl(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
-                          </div>
-                          <div className="space-y-3 md:col-span-2">
-                            <label className="text-xs font-bold text-gold-500 uppercase tracking-widest">YouTube Channel ID (for Live check)</label>
-                            <input type="text" value={youtubeChannelId} onChange={(e) => setYoutubeChannelId(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-gold-500" />
                           </div>
                         </div>
                       </div>

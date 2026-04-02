@@ -7,12 +7,9 @@ import {
   Twitch, 
   Trophy, 
   Target, 
-  Users, 
-  ExternalLink,
-  Play,
-  ChevronRight,
-  Gamepad2,
-  Zap
+  Gamepad2, 
+  Zap,
+  MessageSquare
 } from "lucide-react";
 import { PLAYER_DATA } from "./constants";
 import AdminPanel from "./AdminPanel";
@@ -255,6 +252,46 @@ export default function App() {
                   </div>
                 </div>
               </div>
+
+              {/* Team Socials */}
+              <div className="mt-10 p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md">
+                <h3 className="text-lg font-black text-white mb-6 uppercase tracking-[0.2em] flex items-center gap-3">
+                  <Zap size={16} className="text-gold-500" />
+                  {playerData.teamSocialsHeading}
+                </h3>
+                <div className="flex gap-4">
+                  {playerData.teamInstagramUrl && (
+                    <a 
+                      href={playerData.teamInstagramUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-white/40 hover:text-gold-500 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all"
+                    >
+                      <Instagram size={20} />
+                    </a>
+                  )}
+                  {playerData.teamDiscordUrl && (
+                    <a 
+                      href={playerData.teamDiscordUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-white/40 hover:text-gold-500 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all"
+                    >
+                      <MessageSquare size={20} />
+                    </a>
+                  )}
+                  {playerData.teamYoutubeUrl && (
+                    <a 
+                      href={playerData.teamYoutubeUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="w-12 h-12 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-white/40 hover:text-gold-500 hover:border-gold-500/50 hover:bg-gold-500/5 transition-all"
+                    >
+                      <Youtube size={20} />
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Achievements */}
@@ -285,74 +322,12 @@ export default function App() {
         </div>
       </section>
 
-      {/* YouTube Section - Made Transparent */}
-      <section id="youtube" className="relative z-10 py-32">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-5xl font-black uppercase mb-6">Latest Content</h2>
-              <p className="text-gray-400 text-lg">
-                Check out my latest highlights, tutorials, and behind-the-scenes content on YouTube.
-              </p>
-            </div>
-            <a 
-              href={`https://youtube.com/channel/${playerData.youtubeChannelId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 text-gold-500 font-black uppercase tracking-widest hover:text-gold-400 transition-colors group"
-            >
-              Visit Channel <ExternalLink size={20} className="group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="aspect-video rounded-2xl overflow-hidden relative mb-6 gold-border">
-                  <img 
-                    src={`https://picsum.photos/seed/yt${i}/800/450`} 
-                    alt="Video Thumbnail" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-16 h-16 rounded-full gold-gradient flex items-center justify-center">
-                      <Play size={24} className="fill-black text-black ml-1" />
-                    </div>
-                  </div>
-                  <div className="absolute bottom-4 right-4 px-2 py-1 bg-black/80 text-[10px] font-bold text-white rounded">
-                    12:45
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors">
-                  How to Master {PLAYER_DATA.role} in 2026
-                </h3>
-                <div className="flex items-center gap-4 text-white/40 text-sm font-medium">
-                  <span>1.2M Views</span>
-                  <span>•</span>
-                  <span>2 days ago</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="relative z-10 py-20 border-t border-white/5 bg-black/50 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 gold-gradient rounded flex items-center justify-center">
-                <Zap className="text-black fill-black" size={18} />
-              </div>
-              <span className="text-lg font-black tracking-tighter gold-text-gradient uppercase">
-                {PLAYER_DATA.handle}
-              </span>
-            </div>
-            
             <div className="flex items-center gap-8">
-              {PLAYER_DATA.socials.map((social) => {
+              {playerData.socials.map((social: any) => {
                 const Icon = IconMap[social.icon];
                 return (
                   <a 
@@ -367,7 +342,7 @@ export default function App() {
             </div>
 
             <p className="text-white/20 text-sm font-medium">
-              © 2026 {PLAYER_DATA.handle}. All rights reserved.
+              © 2026 {playerData.handle}. All rights reserved.
             </p>
           </div>
         </div>
