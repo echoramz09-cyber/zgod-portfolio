@@ -1,12 +1,12 @@
 import { PlayerData } from "./types";
 
 export const PLAYER_DATA: PlayerData = {
-  name: "Alexander 'Xenon' Rivers",
-  handle: "XENON",
-  handlePrefix: "PRO PLAYER",
-  role: "Entry Fragger / IGL",
-  team: "GOLDEN PHOENIX",
-  teamLogo: "https://picsum.photos/seed/phoenix/200/200",
+  name: "ZGOD",
+  handle: "ZGOD",
+  handlePrefix: "E-SPORTS ATHLETE",
+  role: "Professional Player",
+  team: "GODLIKE",
+  teamLogo: "https://picsum.photos/seed/godlike/200/200",
   image: "",
   imageScale: 1,
   textOffset: -80,
@@ -14,7 +14,7 @@ export const PLAYER_DATA: PlayerData = {
   leftLogoScale: 1,
   rightLogoUrl: "",
   rightLogoScale: 1,
-  bio: "Professional FPS player with over 5 years of competitive experience. Known for aggressive entry fragging and strategic mid-round calling. Multiple-time major finalist and MVP.",
+  bio: "Professional Showcase of ZGOD. Elite esports athlete competing at the highest level.",
   socials: [
     { platform: "Twitter", url: "https://twitter.com", icon: "Twitter" },
     { platform: "Instagram", url: "https://instagram.com", icon: "Instagram" },
